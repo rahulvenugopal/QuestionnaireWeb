@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Research Questionnaire</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+            overflow: hidden;
+        }
+
+        .login-screen, .questionnaire-screen {
+            padding: 40px;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        h1 {
+            color: #333;
+            margin-bottom: 10px;
+            font-size: 28px;
+        }
+
+        .subtitle {
+            color: #666;
+            margin-bottom: 30px;
+            font-size: 14px;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #333;
+            font-weight: 500;
+            font-size: 14px;
+        }
+
+        input[type="password"],
+        input[type="text"],
+        input[type="email"],
+        input[type="number"],
+        select,
+        textarea {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e0e0e0;
+            border-radius: 6px;
+            font-size: 14px;
+            transition: border-color 0.3s;
+        }
+
+        input:focus,
+        select:focus,
+        textarea:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        .radio-group,
+        .checkbox-group {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .radio-option,
+        .checkbox-option {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .radio-option input,
+        .checkbox-option input {
+            width: auto;
+            cursor: pointer;
+        }
+
+        .radio-option label,
+        .checkbox-option label {
+            margin: 0;
+            cursor: pointer;
+            font-weight: normal;
+        }
+
+        button {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 14px 32px;
+            border-radius: 6px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+            width: 100%;
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+        }
+
+        button:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .error-message {
+            background: #fee;
+            color: #c33;
+            padding: 12px;
+            border-radius: 6px;
+            margin-bottom: 20px;
+            font-size: 14px;
+            display: none;
+        }
+
+        .success-message {
+            background: #efe;
+            color: #3c3;
+            padding: 12px;
+            border-radius: 6px;
+            margin-bottom: 20px;
+            font-size: 14px;
+            display: none;
+        }
+
+        .question-number {
+            color: #667eea;
+            font-weight: 600;
+            font-size: 12px;
+            margin-bottom: 5px;
+        }
+
+        .progress-bar {
+            height: 4px;
+            background: #e0e0e0;
+            position: relative;
+            margin-bottom: 30px;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+            width: 0%;
+            transition: width 0.3s;
+        }
+
+        .required {
+            color: #e74c3c;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Login Screen -->
+        <div id="loginScreen" class="login-screen">
+            <h1>🔒 Secure Access</h1>
+            <p class="subtitle">Please enter the password to access the questionnaire</p>
+            
+            <div id="loginError" class="error-message"></div>
+            
+            <form id="loginForm">
+                <div class="form-group">
+                    <label for="password">Password <span class="required">*</span></label>
+                    <input type="password" id="password" required placeholder="Enter password">
+                </div>
+                <button type="submit">Access Questionnaire</button>
+            </form>
+        </div>
+
+        <!-- Questionnaire Screen -->
+        <div id="questionnaireScreen" class="questionnaire-screen hidden">
+            <h1>📋 Research Questionnaire</h1>
+            <p class="subtitle">Please answer all questions honestly. Your responses are confidential.</p>
+            
+            <div class="progress-bar">
+                <div id="progressFill" class="progress-fill"></div>
+            </div>
+            
+            <div id="successMessage" class="success-message"></div>
+            <div id="formError" class="error-message"></div>
+            
+            <form id="questionnaireForm">
+                <!-- Participant Information -->
+                <div class="form-group">
+                    <div class="question-number">PARTICIPANT INFORMATION</div>
+                    <label for="participantId">Participant ID <span class="required">*</span></label>
+                    <input type="text" id="participantId" name="participantId" required placeholder="e.g., P001">
+                </div>
+
+                <div class="form-group">
+                    <label for="age">Age <span class="required">*</span></label>
+                    <input type="number" id="age" name="age" required min="18" max="120" placeholder="Enter your age">
+                </div>
+
+                <div class="form-group">
+                    <label for="gender">Gender <span class="required">*</span></label>
+                    <select id="gender" name="gender" required>
+                        <option value="">Select...</option>
+                        <option value="Male">Male</option>
+                        <option value="Female">Female</option>
+                        <option value="Non-binary">Non-binary</option>
+                        <option value="Prefer not to say">Prefer not to say</option>
+                    </select>
+                </div>
+
+                <!-- Sample Questions (you can add 30 of these) -->
+                <div class="form-group">
+                    <div class="question-number">QUESTION 1</div>
+                    <label>How satisfied are you with your current situation? <span class="required">*</span></label>
+                    <div class="radio-group">
+                        <div class="radio-option">
+                            <input type="radio" id="q1_1" name="question1" value="Very Dissatisfied" required>
+                            <label for="q1_1">Very Dissatisfied</label>
+                        </div>
+                        <div class="radio-option">
+                            <input type="radio" id="q1_2" name="question1" value="Dissatisfied">
+                            <label for="q1_2">Dissatisfied</label>
+                        </div>
+                        <div class="radio-option">
+                            <input type="radio" id="q1_3" name="question1" value="Neutral">
+                            <label for="q1_3">Neutral</label>
+                        </div>
+                        <div class="radio-option">
+                            <input type="radio" id="q1_4" name="question1" value="Satisfied">
+                            <label for="q1_4">Satisfied</label>
+                        </div>
+                        <div class="radio-option">
+                            <input type="radio" id="q1_5" name="question1" value="Very Satisfied">
+                            <label for="q1_5">Very Satisfied</label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="question-number">QUESTION 2</div>
+                    <label>On a scale of 1-10, how would you rate your stress level? <span class="required">*</span></label>
+                    <input type="number" name="question2" required min="1" max="10" placeholder="1 (low) - 10 (high)">
+                </div>
+
+                <div class="form-group">
+                    <div class="question-number">QUESTION 3</div>
+                    <label>Which of the following activities do you engage in regularly? (Select all that apply)</label>
+                    <div class="checkbox-group">
+                        <div class="checkbox-option">
+                            <input type="checkbox" id="activity1" name="activities" value="Exercise">
+                            <label for="activity1">Exercise</label>
+                        </div>
+                        <div class="checkbox-option">
+                            <input type="checkbox" id="activity2" name="activities" value="Reading">
+                            <label for="activity2">Reading</label>
+                        </div>
+                        <div class="checkbox-option">
+                            <input type="checkbox" id="activity3" name="activities" value="Meditation">
+                            <label for="activity3">Meditation</label>
+                        </div>
+                        <div class="checkbox-option">
+                            <input type="checkbox" id="activity4" name="activities" value="Socializing">
+                            <label for="activity4">Socializing</label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="question-number">QUESTION 4</div>
+                    <label for="openResponse">Please describe your typical day:</label>
+                    <textarea id="openResponse" name="question4" placeholder="Type your answer here..."></textarea>
+                </div>
+
+                <!-- Add more questions as needed (up to 30) -->
+
+                <button type="submit" id="submitBtn">Submit Questionnaire</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // Configuration - REPLACE THIS WITH YOUR GOOGLE APPS SCRIPT WEB APP URL
+        const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbynKMNfN2DKXEQ7UfzeaNk-KegJUINuxU7lrwqYYd52Nt7XNxFxXVq3kunsnRYY7rbEDw/exec';
+        const CORRECT_PASSWORD = 'research2024'; // Change this to your desired password
+
+        // DOM Elements
+        const loginScreen = document.getElementById('loginScreen');
+        const questionnaireScreen = document.getElementById('questionnaireScreen');
+        const loginForm = document.getElementById('loginForm');
+        const questionnaireForm = document.getElementById('questionnaireForm');
+        const loginError = document.getElementById('loginError');
+        const formError = document.getElementById('formError');
+        const successMessage = document.getElementById('successMessage');
+        const progressFill = document.getElementById('progressFill');
+        const submitBtn = document.getElementById('submitBtn');
+
+        // Login handling
+        loginForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            const password = document.getElementById('password').value;
+            
+            if (password === CORRECT_PASSWORD) {
+                loginScreen.classList.add('hidden');
+                questionnaireScreen.classList.remove('hidden');
+                loginError.style.display = 'none';
+            } else {
+                loginError.textContent = 'Incorrect password. Please try again.';
+                loginError.style.display = 'block';
+            }
+        });
+
+        // Progress bar update
+        questionnaireForm.addEventListener('input', function() {
+            const formData = new FormData(questionnaireForm);
+            const totalFields = questionnaireForm.querySelectorAll('input[required], select[required], textarea[required]').length;
+            let filledFields = 0;
+
+            questionnaireForm.querySelectorAll('input[required], select[required], textarea[required]').forEach(field => {
+                if (field.type === 'radio') {
+                    if (document.querySelector(`input[name="${field.name}"]:checked`)) {
+                        filledFields++;
+                    }
+                } else if (field.value.trim() !== '') {
+                    filledFields++;
+                }
+            });
+
+            // Remove duplicates for radio buttons
+            const radioGroups = new Set();
+            questionnaireForm.querySelectorAll('input[type="radio"][required]').forEach(radio => {
+                radioGroups.add(radio.name);
+            });
+            
+            const actualTotal = totalFields - (questionnaireForm.querySelectorAll('input[type="radio"][required]').length - radioGroups.size);
+            const progress = (filledFields / actualTotal) * 100;
+            progressFill.style.width = progress + '%';
+        });
+
+        // Form submission
+        questionnaireForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'Submitting...';
+            formError.style.display = 'none';
+            successMessage.style.display = 'none';
+
+            // Collect form data
+            const formData = new FormData(questionnaireForm);
+            const data = {
+                timestamp: new Date().toISOString(),
+                participantId: formData.get('participantId'),
+                age: formData.get('age'),
+                gender: formData.get('gender'),
+                question1: formData.get('question1'),
+                question2: formData.get('question2'),
+                activities: formData.getAll('activities').join(', '),
+                question4: formData.get('question4')
+                // Add more fields as needed
+            };
+
+            // Send to Google Sheets
+            fetch(GOOGLE_SCRIPT_URL, {
+                method: 'POST',
+                mode: 'no-cors',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(data)
+            })
+            .then(() => {
+                successMessage.textContent = '✓ Thank you! Your responses have been submitted successfully.';
+                successMessage.style.display = 'block';
+                questionnaireForm.reset();
+                progressFill.style.width = '0%';
+                submitBtn.disabled = false;
+                submitBtn.textContent = 'Submit Questionnaire';
+                window.scrollTo(0, 0);
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                formError.textContent = '✗ There was an error submitting your responses. Please try again.';
+                formError.style.display = 'block';
+                submitBtn.disabled = false;
+                submitBtn.textContent = 'Submit Questionnaire';
+            });
+        });
+    </script>
+</body>
+</html>
