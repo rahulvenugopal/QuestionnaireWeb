@@ -32,13 +32,21 @@
         }
 
         .hidden {
-            display: none;
+            display: none !important;
         }
 
         h1 {
             color: #333;
             margin-bottom: 10px;
             font-size: 28px;
+        }
+
+        h3 {
+            color: #4a5568;
+            margin-bottom: 20px;
+            font-size: 20px;
+            border-bottom: 2px solid #e2e8f0;
+            padding-bottom: 10px;
         }
 
         .subtitle {
@@ -156,13 +164,6 @@
             display: none;
         }
 
-        .question-number {
-            color: #667eea;
-            font-weight: 600;
-            font-size: 12px;
-            margin-bottom: 5px;
-        }
-
         .progress-bar {
             height: 4px;
             background: #e0e0e0;
@@ -179,6 +180,33 @@
 
         .required {
             color: #e74c3c;
+        }
+
+        /* Page specific styles */
+        .form-page {
+            animation: fadeIn 0.5s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .button-group {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+            gap: 10px;
+        }
+
+        .prev-btn {
+            background: #cbd5e0; /* Gray for previous */
+            color: #4a5568;
+        }
+        
+        .prev-btn:hover {
+            background: #a0aec0;
+            color: #2d3748;
         }
     </style>
 </head>
@@ -205,6 +233,7 @@
             <h1>📋 Research Questionnaire</h1>
             <p class="subtitle">Please answer all questions honestly. Your responses are confidential.</p>
             
+            <!-- Progress Bar -->
             <div class="progress-bar">
                 <div id="progressFill" class="progress-fill"></div>
             </div>
@@ -213,116 +242,229 @@
             <div id="formError" class="error-message"></div>
             
             <form id="questionnaireForm">
-                <!-- Participant Information -->
-                <div class="form-group">
-                    <div class="question-number">PARTICIPANT INFORMATION</div>
-                    <label for="participantId">Participant ID <span class="required">*</span></label>
-                    <input type="text" id="participantId" name="participantId" required placeholder="e.g., P001">
-                </div>
+                <input type="hidden" id="uniqueId" name="uniqueId">
+                
+                <!-- Page 1: Demographics -->
+                <div id="page1" class="form-page">
+                    <h3>Part 1: Personal Information</h3>
+                    
+                    <div class="form-group">
+                        <label for="participantId">Full Name <span class="required">*</span></label>
+                        <input type="text" id="participantId" name="Full_Name" required placeholder="e.g., John Doe">
+                    </div>
 
-                <div class="form-group">
-                    <label for="age">Age <span class="required">*</span></label>
-                    <input type="number" id="age" name="age" required min="18" max="120" placeholder="Enter your age">
-                </div>
+                    <div class="form-group">
+                        <label for="age">Age <span class="required">*</span></label>
+                        <input type="number" id="age" name="Age" required min="18" max="120" placeholder="Enter your age">
+                    </div>
 
-                <div class="form-group">
-                    <label for="gender">Gender <span class="required">*</span></label>
-                    <select id="gender" name="gender" required>
-                        <option value="">Select...</option>
-                        <option value="Male">Male</option>
-                        <option value="Female">Female</option>
-                        <option value="Non-binary">Non-binary</option>
-                        <option value="Prefer not to say">Prefer not to say</option>
-                    </select>
-                </div>
+                    <div class="form-group">
+                        <label for="gender">Gender <span class="required">*</span></label>
+                        <select id="gender" name="Gender" required>
+                            <option value="">Select...</option>
+                            <option value="Male">Male</option>
+                            <option value="Female">Female</option>
+                            <option value="Non-binary">Non-binary</option>
+                            <option value="Prefer not to say">Prefer not to say</option>
+                        </select>
+                    </div>
 
-                <!-- Sample Questions (you can add 30 of these) -->
-                <div class="form-group">
-                    <div class="question-number">QUESTION 1</div>
-                    <label>How satisfied are you with your current situation? <span class="required">*</span></label>
-                    <div class="radio-group">
-                        <div class="radio-option">
-                            <input type="radio" id="q1_1" name="question1" value="Very Dissatisfied" required>
-                            <label for="q1_1">Very Dissatisfied</label>
+                    <div class="form-group">
+                        <label>Current Employment Status <span class="required">*</span></label>
+                        <div class="radio-group">
+                            <div class="radio-option">
+                                <input type="radio" id="emp1" name="Employment_Status" value="Employed Full-Time" required>
+                                <label for="emp1">Employed Full-Time</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" id="emp2" name="Employment_Status" value="Employed Part-Time">
+                                <label for="emp2">Employed Part-Time</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" id="emp3" name="Employment_Status" value="Student">
+                                <label for="emp3">Student</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" id="emp4" name="Employment_Status" value="Unemployed">
+                                <label for="emp4">Unemployed</label>
+                            </div>
                         </div>
-                        <div class="radio-option">
-                            <input type="radio" id="q1_2" name="question1" value="Dissatisfied">
-                            <label for="q1_2">Dissatisfied</label>
-                        </div>
-                        <div class="radio-option">
-                            <input type="radio" id="q1_3" name="question1" value="Neutral">
-                            <label for="q1_3">Neutral</label>
-                        </div>
-                        <div class="radio-option">
-                            <input type="radio" id="q1_4" name="question1" value="Satisfied">
-                            <label for="q1_4">Satisfied</label>
-                        </div>
-                        <div class="radio-option">
-                            <input type="radio" id="q1_5" name="question1" value="Very Satisfied">
-                            <label for="q1_5">Very Satisfied</label>
-                        </div>
+                    </div>
+
+                    <div class="button-group">
+                        <button type="button" onclick="nextPage(1)">Next ➡</button>
                     </div>
                 </div>
 
-                <div class="form-group">
-                    <div class="question-number">QUESTION 2</div>
-                    <label>On a scale of 1-10, how would you rate your stress level? <span class="required">*</span></label>
-                    <input type="number" name="question2" required min="1" max="10" placeholder="1 (low) - 10 (high)">
-                </div>
+                <!-- Page 2: Lifestyle -->
+                <div id="page2" class="form-page hidden">
+                    <h3>Part 2: Lifestyle & Habits</h3>
 
-                <div class="form-group">
-                    <div class="question-number">QUESTION 3</div>
-                    <label>Which of the following activities do you engage in regularly? (Select all that apply)</label>
-                    <div class="checkbox-group">
-                        <div class="checkbox-option">
-                            <input type="checkbox" id="activity1" name="activities" value="Exercise">
-                            <label for="activity1">Exercise</label>
+                    <div class="form-group">
+                        <label>How often do you exercise? <span class="required">*</span></label>
+                        <select name="Exercise_Frequency" required>
+                            <option value="">Select...</option>
+                            <option value="Daily">Daily</option>
+                            <option value="Weekly">Weekly (1-3 times)</option>
+                            <option value="Monthly">Monthly</option>
+                            <option value="Rarely">Rarely / Never</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Which streaming services do you use? (Select all that apply)</label>
+                        <div class="checkbox-group">
+                            <div class="checkbox-option">
+                                <input type="checkbox" id="str1" name="Streaming_Services" value="Netflix">
+                                <label for="str1">Netflix</label>
+                            </div>
+                            <div class="checkbox-option">
+                                <input type="checkbox" id="str2" name="Streaming_Services" value="Hulu">
+                                <label for="str2">Hulu</label>
+                            </div>
+                            <div class="checkbox-option">
+                                <input type="checkbox" id="str3" name="Streaming_Services" value="Disney+">
+                                <label for="str3">Disney+</label>
+                            </div>
+                            <div class="checkbox-option">
+                                <input type="checkbox" id="str4" name="Streaming_Services" value="Amazon Prime">
+                                <label for="str4">Amazon Prime</label>
+                            </div>
+                            <div class="checkbox-option">
+                                <input type="checkbox" id="str5" name="Streaming_Services" value="HBO Max">
+                                <label for="str5">HBO Max</label>
+                            </div>
                         </div>
-                        <div class="checkbox-option">
-                            <input type="checkbox" id="activity2" name="activities" value="Reading">
-                            <label for="activity2">Reading</label>
+                    </div>
+
+                    <div class="form-group">
+                        <label>On a scale of 1-5, how important is sustainability to you?</label>
+                        <div class="radio-group" style="flex-direction: row; justify-content: space-between; max-width: 300px;">
+                            <label><input type="radio" name="Sustainability_Importance" value="1" required> 1</label>
+                            <label><input type="radio" name="Sustainability_Importance" value="2"> 2</label>
+                            <label><input type="radio" name="Sustainability_Importance" value="3"> 3</label>
+                            <label><input type="radio" name="Sustainability_Importance" value="4"> 4</label>
+                            <label><input type="radio" name="Sustainability_Importance" value="5"> 5</label>
                         </div>
-                        <div class="checkbox-option">
-                            <input type="checkbox" id="activity3" name="activities" value="Meditation">
-                            <label for="activity3">Meditation</label>
+                        <div style="font-size: 12px; color: #666; display: flex; justify-content: space-between; max-width: 300px;">
+                            <span>Not Important</span>
+                            <span>Very Important</span>
                         </div>
-                        <div class="checkbox-option">
-                            <input type="checkbox" id="activity4" name="activities" value="Socializing">
-                            <label for="activity4">Socializing</label>
-                        </div>
+                    </div>
+
+                    <div class="button-group">
+                        <button type="button" class="prev-btn" onclick="prevPage(2)">⬅ Previous</button>
+                        <button type="button" onclick="nextPage(2)">Next ➡</button>
                     </div>
                 </div>
 
-                <div class="form-group">
-                    <div class="question-number">QUESTION 4</div>
-                    <label for="openResponse">Please describe your typical day:</label>
-                    <textarea id="openResponse" name="question4" placeholder="Type your answer here..."></textarea>
+                <!-- Page 3: Feedback -->
+                <div id="page3" class="form-page hidden">
+                    <h3>Part 3: Final Thoughts</h3>
+
+                    <div class="form-group">
+                        <label>What is your preferred mode of communication? <span class="required">*</span></label>
+                        <div class="radio-group">
+                            <div class="radio-option">
+                                <input type="radio" id="comm1" name="Communication_Preference" value="Email" required>
+                                <label for="comm1">Email</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" id="comm2" name="Communication_Preference" value="Phone">
+                                <label for="comm2">Phone Call</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" id="comm3" name="Communication_Preference" value="Text/SMS">
+                                <label for="comm3">Text / SMS</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" id="comm4" name="Communication_Preference" value="In-Person">
+                                <label for="comm4">In-Person</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="openResponse">Is there anything else you would like to share with us?</label>
+                        <textarea id="openResponse" name="Additional_Comments" placeholder="Type your answer here..."></textarea>
+                    </div>
+
+                    <div class="button-group">
+                        <button type="button" class="prev-btn" onclick="prevPage(3)">⬅ Previous</button>
+                        <button type="submit" id="submitBtn">Submit Questionnaire</button>
+                    </div>
                 </div>
-
-                <!-- Add more questions as needed (up to 30) -->
-
-                <button type="submit" id="submitBtn">Submit Questionnaire</button>
             </form>
         </div>
     </div>
 
     <script>
         // Configuration - REPLACE THIS WITH YOUR GOOGLE APPS SCRIPT WEB APP URL
-        const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbynKMNfN2DKXEQ7UfzeaNk-KegJUINuxU7lrwqYYd52Nt7XNxFxXVq3kunsnRYY7rbEDw/exec';
-        const CORRECT_PASSWORD = 'research2024'; // Change this to your desired password
+        const GOOGLE_SCRIPT_URL = 'https://rahulvenugopal.github.io/QuestionnaireWeb/';
+        const CORRECT_PASSWORD = 'research2024'; 
 
         // DOM Elements
         const loginScreen = document.getElementById('loginScreen');
         const questionnaireScreen = document.getElementById('questionnaireScreen');
         const loginForm = document.getElementById('loginForm');
-        const questionnaireForm = document.getElementById('questionnaireForm');
         const loginError = document.getElementById('loginError');
         const formError = document.getElementById('formError');
         const successMessage = document.getElementById('successMessage');
         const progressFill = document.getElementById('progressFill');
         const submitBtn = document.getElementById('submitBtn');
 
-        // Login handling
+        // Functions
+        function generateUniqueId() {
+            return 'ID-' + Math.floor(Math.random() * 1000000) + '-' + Date.now();
+        }
+
+        function updateProgress(page) {
+            // 3 pages total
+            let percentage = 0;
+            if(page === 1) percentage = 33;
+            if(page === 2) percentage = 66;
+            if(page === 3) percentage = 100;
+            progressFill.style.width = percentage + '%';
+        }
+
+        function nextPage(currentPage) {
+            const currentDiv = document.getElementById('page' + currentPage);
+            
+            // Allow navigation only if fields in current page are valid
+            const inputs = currentDiv.querySelectorAll('input, select, textarea');
+            let valid = true;
+            inputs.forEach(input => {
+                if (input.hasAttribute('required') && !input.checkValidity()) {
+                    input.reportValidity();
+                    valid = false;
+                }
+            });
+
+            if(!valid) return;
+
+            // Hide current, Show next
+            currentDiv.classList.add('hidden');
+            const nextPageNum = currentPage + 1;
+            const nextDiv = document.getElementById('page' + nextPageNum);
+            nextDiv.classList.remove('hidden');
+            
+            updateProgress(nextPageNum);
+            window.scrollTo(0,0);
+        }
+
+        function prevPage(currentPage) {
+            const currentDiv = document.getElementById('page' + currentPage);
+            currentDiv.classList.add('hidden');
+            
+            const prevPageNum = currentPage - 1;
+            const prevDiv = document.getElementById('page' + prevPageNum);
+            prevDiv.classList.remove('hidden');
+            
+            updateProgress(prevPageNum);
+            window.scrollTo(0,0);
+        }
+
+        // Login Logic
         loginForm.addEventListener('submit', function(e) {
             e.preventDefault();
             const password = document.getElementById('password').value;
@@ -331,63 +473,59 @@
                 loginScreen.classList.add('hidden');
                 questionnaireScreen.classList.remove('hidden');
                 loginError.style.display = 'none';
+                
+                // Initialize form
+                document.getElementById('uniqueId').value = generateUniqueId();
+                updateProgress(1);
             } else {
                 loginError.textContent = 'Incorrect password. Please try again.';
                 loginError.style.display = 'block';
             }
         });
 
-        // Progress bar update
-        questionnaireForm.addEventListener('input', function() {
-            const formData = new FormData(questionnaireForm);
-            const totalFields = questionnaireForm.querySelectorAll('input[required], select[required], textarea[required]').length;
-            let filledFields = 0;
-
-            questionnaireForm.querySelectorAll('input[required], select[required], textarea[required]').forEach(field => {
-                if (field.type === 'radio') {
-                    if (document.querySelector(`input[name="${field.name}"]:checked`)) {
-                        filledFields++;
-                    }
-                } else if (field.value.trim() !== '') {
-                    filledFields++;
-                }
-            });
-
-            // Remove duplicates for radio buttons
-            const radioGroups = new Set();
-            questionnaireForm.querySelectorAll('input[type="radio"][required]').forEach(radio => {
-                radioGroups.add(radio.name);
-            });
-            
-            const actualTotal = totalFields - (questionnaireForm.querySelectorAll('input[type="radio"][required]').length - radioGroups.size);
-            const progress = (filledFields / actualTotal) * 100;
-            progressFill.style.width = progress + '%';
-        });
-
-        // Form submission
-        questionnaireForm.addEventListener('submit', function(e) {
+        // Form Submission
+        const form = document.getElementById('questionnaireForm');
+        form.addEventListener('submit', function(e) {
             e.preventDefault();
             
             submitBtn.disabled = true;
             submitBtn.textContent = 'Submitting...';
-            formError.style.display = 'none';
-            successMessage.style.display = 'none';
+            
+            // Gather Data
+            const formData = new FormData(form);
+            const data = {};
+            
+            // Add Timestamp
+            data['Timestamp'] = new Date().toISOString();
+            
+            // Handle multiple checkboxes with same name
+            // First, just get all normal values
+            for (let [key, value] of formData.entries()) {
+                if (data[key]) {
+                    // logic for multiples is generic below, strictly this overwrites if not careful
+                    // but we can just use the unique names I gave: Streaming_Services, etc.
+                } else {
+                     data[key] = value;
+                }
+            }
 
-            // Collect form data
-            const formData = new FormData(questionnaireForm);
-            const data = {
-                timestamp: new Date().toISOString(),
-                participantId: formData.get('participantId'),
-                age: formData.get('age'),
-                gender: formData.get('gender'),
-                question1: formData.get('question1'),
-                question2: formData.get('question2'),
-                activities: formData.getAll('activities').join(', '),
-                question4: formData.get('question4')
-                // Add more fields as needed
-            };
+            // Handle Checkbox Arrays - specifically joining them
+            // Find all unique checkbox names
+            const checkboxNames = new Set();
+            form.querySelectorAll('input[type="checkbox"]').forEach(cb => checkboxNames.add(cb.name));
+            
+            checkboxNames.forEach(name => {
+                const checkedBoxes = form.querySelectorAll(`input[name="${name}"]:checked`);
+                const values = Array.from(checkedBoxes).map(cb => cb.value);
+                if (values.length > 0) {
+                    data[name] = values.join(', ');
+                } else {
+                    data[name] = ""; // clear if none selected
+                }
+            });
 
-            // Send to Google Sheets
+            console.log("Submitting:", data);
+
             fetch(GOOGLE_SCRIPT_URL, {
                 method: 'POST',
                 mode: 'no-cors',
@@ -397,17 +535,19 @@
                 body: JSON.stringify(data)
             })
             .then(() => {
-                successMessage.textContent = '✓ Thank you! Your responses have been submitted successfully.';
+                successMessage.textContent = `✓ Submitted! ID: ${data.uniqueId}. Refresh to start new`;
                 successMessage.style.display = 'block';
-                questionnaireForm.reset();
-                progressFill.style.width = '0%';
-                submitBtn.disabled = false;
-                submitBtn.textContent = 'Submit Questionnaire';
-                window.scrollTo(0, 0);
+                form.reset();
+                document.getElementById('page3').classList.add('hidden');
+                // Could redirect or show a "Done" screen. For now, just success message.
+                
+                // Reset to page 1 for next user if they want (or just stay here)
+                // Let's hide the form and show a "Start New" button maybe?
+                // For simplicity, just leave the success message.
             })
-            .catch(error => {
-                console.error('Error:', error);
-                formError.textContent = '✗ There was an error submitting your responses. Please try again.';
+            .catch(err => {
+                console.error(err);
+                formError.textContent = "Error submitting. Check console.";
                 formError.style.display = 'block';
                 submitBtn.disabled = false;
                 submitBtn.textContent = 'Submit Questionnaire';
