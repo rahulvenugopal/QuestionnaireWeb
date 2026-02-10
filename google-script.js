@@ -2,7 +2,7 @@
 // This goes in your Google Apps Script project (script.google.com)
 
 // Replace with your actual Google Sheet ID
-const SHEET_ID = 'YOUR_GOOGLE_SHEET_ID_HERE';
+const SHEET_ID = '1iMni95O6dGVR2ByTRwi4QnNp5U55e8aGizadScT4hP8';
 const SHEET_NAME = 'Responses';
 
 function doPost(e) {
@@ -19,18 +19,18 @@ function doPost(e) {
     }
 
     const data = JSON.parse(e.postData.contents);
-    
+
     // Get headers from the sheet (1st row)
     const headers = sheet.getRange(1, 1, 1, sheet.getLastColumn() || 1).getValues()[0];
     const newHeaders = [...headers];
-    
+
     // Check incoming keys against existing headers
     const row = [];
     const keys = Object.keys(data);
-    
+
     // Ensure 'Timestamp' is always first if not present
     if (newHeaders.length === 0 || (newHeaders.length === 1 && newHeaders[0] === "")) {
-       newHeaders[0] = "Timestamp";
+      newHeaders[0] = "Timestamp";
     }
 
     // Map data to headers, adding new headers if found

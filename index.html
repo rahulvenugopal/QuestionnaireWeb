@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -27,7 +28,8 @@
             overflow: hidden;
         }
 
-        .login-screen, .questionnaire-screen {
+        .login-screen,
+        .questionnaire-screen {
             padding: 40px;
         }
 
@@ -188,8 +190,15 @@
         }
 
         @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
         .button-group {
@@ -200,25 +209,27 @@
         }
 
         .prev-btn {
-            background: #cbd5e0; /* Gray for previous */
+            background: #cbd5e0;
+            /* Gray for previous */
             color: #4a5568;
         }
-        
+
         .prev-btn:hover {
             background: #a0aec0;
             color: #2d3748;
         }
     </style>
 </head>
+
 <body>
     <div class="container">
         <!-- Login Screen -->
         <div id="loginScreen" class="login-screen">
             <h1>🔒 Secure Access</h1>
             <p class="subtitle">Please enter the password to access the questionnaire</p>
-            
+
             <div id="loginError" class="error-message"></div>
-            
+
             <form id="loginForm">
                 <div class="form-group">
                     <label for="password">Password <span class="required">*</span></label>
@@ -232,22 +243,22 @@
         <div id="questionnaireScreen" class="questionnaire-screen hidden">
             <h1>📋 Research Questionnaire</h1>
             <p class="subtitle">Please answer all questions honestly. Your responses are confidential.</p>
-            
+
             <!-- Progress Bar -->
             <div class="progress-bar">
                 <div id="progressFill" class="progress-fill"></div>
             </div>
-            
+
             <div id="successMessage" class="success-message"></div>
             <div id="formError" class="error-message"></div>
-            
+
             <form id="questionnaireForm">
                 <input type="hidden" id="uniqueId" name="uniqueId">
-                
+
                 <!-- Page 1: Demographics -->
                 <div id="page1" class="form-page">
                     <h3>Part 1: Personal Information</h3>
-                    
+
                     <div class="form-group">
                         <label for="participantId">Full Name <span class="required">*</span></label>
                         <input type="text" id="participantId" name="Full_Name" required placeholder="e.g., John Doe">
@@ -255,7 +266,8 @@
 
                     <div class="form-group">
                         <label for="age">Age <span class="required">*</span></label>
-                        <input type="number" id="age" name="Age" required min="18" max="120" placeholder="Enter your age">
+                        <input type="number" id="age" name="Age" required min="18" max="120"
+                            placeholder="Enter your age">
                     </div>
 
                     <div class="form-group">
@@ -273,7 +285,8 @@
                         <label>Current Employment Status <span class="required">*</span></label>
                         <div class="radio-group">
                             <div class="radio-option">
-                                <input type="radio" id="emp1" name="Employment_Status" value="Employed Full-Time" required>
+                                <input type="radio" id="emp1" name="Employment_Status" value="Employed Full-Time"
+                                    required>
                                 <label for="emp1">Employed Full-Time</label>
                             </div>
                             <div class="radio-option">
@@ -339,14 +352,16 @@
 
                     <div class="form-group">
                         <label>On a scale of 1-5, how important is sustainability to you?</label>
-                        <div class="radio-group" style="flex-direction: row; justify-content: space-between; max-width: 300px;">
+                        <div class="radio-group"
+                            style="flex-direction: row; justify-content: space-between; max-width: 300px;">
                             <label><input type="radio" name="Sustainability_Importance" value="1" required> 1</label>
                             <label><input type="radio" name="Sustainability_Importance" value="2"> 2</label>
                             <label><input type="radio" name="Sustainability_Importance" value="3"> 3</label>
                             <label><input type="radio" name="Sustainability_Importance" value="4"> 4</label>
                             <label><input type="radio" name="Sustainability_Importance" value="5"> 5</label>
                         </div>
-                        <div style="font-size: 12px; color: #666; display: flex; justify-content: space-between; max-width: 300px;">
+                        <div
+                            style="font-size: 12px; color: #666; display: flex; justify-content: space-between; max-width: 300px;">
                             <span>Not Important</span>
                             <span>Very Important</span>
                         </div>
@@ -386,7 +401,8 @@
 
                     <div class="form-group">
                         <label for="openResponse">Is there anything else you would like to share with us?</label>
-                        <textarea id="openResponse" name="Additional_Comments" placeholder="Type your answer here..."></textarea>
+                        <textarea id="openResponse" name="Additional_Comments"
+                            placeholder="Type your answer here..."></textarea>
                     </div>
 
                     <div class="button-group">
@@ -400,8 +416,8 @@
 
     <script>
         // Configuration - REPLACE THIS WITH YOUR GOOGLE APPS SCRIPT WEB APP URL
-        const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbw3--hymJ8y0gLPPnVrve8J4QtAqi-_d6d5baaGFsoZ5A1ABe931uHOKyfVfJIimghnFg/exec';
-        const CORRECT_PASSWORD = 'research2024'; 
+        const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxSoVXxVf_ap7zehrbiuMpgGPPn2PebClYbcP8xmExmb5ytPlFaTSJTTZ6s_NRdDZkjJw/exec';
+        const CORRECT_PASSWORD = 'research2024';
 
         // DOM Elements
         const loginScreen = document.getElementById('loginScreen');
@@ -421,15 +437,15 @@
         function updateProgress(page) {
             // 3 pages total
             let percentage = 0;
-            if(page === 1) percentage = 33;
-            if(page === 2) percentage = 66;
-            if(page === 3) percentage = 100;
+            if (page === 1) percentage = 33;
+            if (page === 2) percentage = 66;
+            if (page === 3) percentage = 100;
             progressFill.style.width = percentage + '%';
         }
 
         function nextPage(currentPage) {
             const currentDiv = document.getElementById('page' + currentPage);
-            
+
             // Allow navigation only if fields in current page are valid
             const inputs = currentDiv.querySelectorAll('input, select, textarea');
             let valid = true;
@@ -440,40 +456,40 @@
                 }
             });
 
-            if(!valid) return;
+            if (!valid) return;
 
             // Hide current, Show next
             currentDiv.classList.add('hidden');
             const nextPageNum = currentPage + 1;
             const nextDiv = document.getElementById('page' + nextPageNum);
             nextDiv.classList.remove('hidden');
-            
+
             updateProgress(nextPageNum);
-            window.scrollTo(0,0);
+            window.scrollTo(0, 0);
         }
 
         function prevPage(currentPage) {
             const currentDiv = document.getElementById('page' + currentPage);
             currentDiv.classList.add('hidden');
-            
+
             const prevPageNum = currentPage - 1;
             const prevDiv = document.getElementById('page' + prevPageNum);
             prevDiv.classList.remove('hidden');
-            
+
             updateProgress(prevPageNum);
-            window.scrollTo(0,0);
+            window.scrollTo(0, 0);
         }
 
         // Login Logic
-        loginForm.addEventListener('submit', function(e) {
+        loginForm.addEventListener('submit', function (e) {
             e.preventDefault();
             const password = document.getElementById('password').value;
-            
+
             if (password === CORRECT_PASSWORD) {
                 loginScreen.classList.add('hidden');
                 questionnaireScreen.classList.remove('hidden');
                 loginError.style.display = 'none';
-                
+
                 // Initialize form
                 document.getElementById('uniqueId').value = generateUniqueId();
                 updateProgress(1);
@@ -485,19 +501,19 @@
 
         // Form Submission
         const form = document.getElementById('questionnaireForm');
-        form.addEventListener('submit', function(e) {
+        form.addEventListener('submit', function (e) {
             e.preventDefault();
-            
+
             submitBtn.disabled = true;
             submitBtn.textContent = 'Submitting...';
-            
+
             // Gather Data
             const formData = new FormData(form);
             const data = {};
-            
+
             // Add Timestamp
             data['Timestamp'] = new Date().toISOString();
-            
+
             // Handle multiple checkboxes with same name
             // First, just get all normal values
             for (let [key, value] of formData.entries()) {
@@ -505,7 +521,7 @@
                     // logic for multiples is generic below, strictly this overwrites if not careful
                     // but we can just use the unique names I gave: Streaming_Services, etc.
                 } else {
-                     data[key] = value;
+                    data[key] = value;
                 }
             }
 
@@ -513,7 +529,7 @@
             // Find all unique checkbox names
             const checkboxNames = new Set();
             form.querySelectorAll('input[type="checkbox"]').forEach(cb => checkboxNames.add(cb.name));
-            
+
             checkboxNames.forEach(name => {
                 const checkedBoxes = form.querySelectorAll(`input[name="${name}"]:checked`);
                 const values = Array.from(checkedBoxes).map(cb => cb.value);
@@ -530,29 +546,30 @@
                 method: 'POST',
                 mode: 'no-cors',
                 headers: {
-                    'Content-Type': 'application/json',
+                    'Content-Type': 'text/plain;charset=utf-8',
                 },
                 body: JSON.stringify(data)
             })
-            .then(() => {
-                successMessage.textContent = `✓ Submitted! ID: ${data.uniqueId}. Refresh to start new`;
-                successMessage.style.display = 'block';
-                form.reset();
-                document.getElementById('page3').classList.add('hidden');
-                // Could redirect or show a "Done" screen. For now, just success message.
-                
-                // Reset to page 1 for next user if they want (or just stay here)
-                // Let's hide the form and show a "Start New" button maybe?
-                // For simplicity, just leave the success message.
-            })
-            .catch(err => {
-                console.error(err);
-                formError.textContent = "Error submitting. Check console.";
-                formError.style.display = 'block';
-                submitBtn.disabled = false;
-                submitBtn.textContent = 'Submit Questionnaire';
-            });
+                .then(() => {
+                    successMessage.textContent = `✓ Submitted! ID: ${data.uniqueId}. Refresh to start new`;
+                    successMessage.style.display = 'block';
+                    form.reset();
+                    document.getElementById('page3').classList.add('hidden');
+                    // Could redirect or show a "Done" screen. For now, just success message.
+
+                    // Reset to page 1 for next user if they want (or just stay here)
+                    // Let's hide the form and show a "Start New" button maybe?
+                    // For simplicity, just leave the success message.
+                })
+                .catch(err => {
+                    console.error(err);
+                    formError.textContent = "Error submitting. Check console.";
+                    formError.style.display = 'block';
+                    submitBtn.disabled = false;
+                    submitBtn.textContent = 'Submit Questionnaire';
+                });
         });
     </script>
 </body>
+
 </html>
